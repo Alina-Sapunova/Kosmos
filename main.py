@@ -1,9 +1,8 @@
 import logging
 from telegram.ext import Application
 from telegram.ext import CommandHandler
-from telegram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton, KeyboardButton,
+from telegram import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton, KeyboardButton
 from config import TOKEN
-from telegram.ext import MessageHandler, Filters
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.DEBUG
@@ -45,13 +44,17 @@ def build_menu(buttons, n_cols,
 
 
 async def fact_one(update, context):
-    buttons = ['Фил', 'Л', 'М']
+    buttons = ['/1', '/two', '/3']
     keyboard = [
         [button] for button in buttons
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard)
     await update.message.reply_text(
-        text="Первый космонавт Земли?",
+        text="""Первый космонавт Земли?
+             Варианты ответа:
+             1.С.П. Королев
+             2.Ю.А. Гагарин
+             3.Г.С. Титов""",
         reply_markup=reply_markup
     )
 
@@ -61,10 +64,9 @@ async def eee(update, context):
         await update.message.reply_text("ееееее")
 
 async def otvet_command(update, context):
-    if 'Go' in update.message.text:
+    if 'two' in update.message.text:
         chat_id = update.message.chat.id
-        await context.bot.send_photo(chat_id=chat_id, photo="C:\Kosmos\img\gagarin.jpg",
-                                     context='Первый космонавт Земли - Ю.A.Гагарин')
+        await context.bot.send_photo(chat_id=chat_id, photo="C:\Kosmos\img\gagarin.jpg")
 
 
 async def f_command(update, context):
@@ -83,15 +85,12 @@ def main():
     application.add_handler(CommandHandler("begin", begin_command))
     application.add_handler(CommandHandler("finish", finish_command))
     application.add_handler(CommandHandler("Go", fact_one))
-    application.add_handler(CommandHandler("Go", fact_one))
-    application.add_handler(MessageHandler(Filters.text & Filters.user(username="Фил"), f_command))
-    # application.add_handler(CommandHandler("new_year", photo_new_year))
-    # application.add_handler(CommandHandler("birthday", photo_birthday))
-    # application.add_handler(CommandHandler("easter", photo_easter))
-    # application.add_handler(CommandHandler("No", no_command))
+    application.add_handler(CommandHandler("two", otvet_command))
+    # application.add_handler(MessageHandler("Фил", eee))
     application.run_polling()
-    eee()
+
 
 
 if __name__ == '__main__':
     main()
+
