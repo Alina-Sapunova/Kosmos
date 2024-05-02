@@ -10,7 +10,7 @@ def start(message):
     button = types.KeyboardButton(text='/begin')
     klava.add(button)
     bot.send_message(message.chat.id, 'Привет, я SpaceBot! Знаю много фактов, связанных с космосом. '
-                                      'А знаешь ли ты? Отправь команду </begin> и начнём.', reply_markup=klava)
+                                      'А знаешь ли ты? Отправь команду /begin и начнём.', reply_markup=klava)
 
 
 @bot.message_handler(commands=['begin'])
@@ -19,7 +19,7 @@ def begin_comand(message):
     button = types.KeyboardButton(text='/Go')
     klava.add(button)
     bot.send_message(message.chat.id, 'Я буду задавать вопросы про различные факты о космосе, '
-                                      'а ты отвечай из предложенных вариантов.Если появятся вопросы отправляй команду </help>',
+                                      'а ты отвечай из предложенных вариантов.Если появятся вопросы отправляй команду /help',
                      reply_markup=klava)
 
 
@@ -45,6 +45,27 @@ def check_one(call):
         bot.send_message(call.message.chat.id, 'Неверно:( Г.С. Титов — второй советский космонавт, '
                                                'второй человек в мире, совершивший орбитальный космический полёт.'
                                                'Попробуй ёщё!')
+
+
+@bot.message_handler(commands=['inline'])
+def inline_comand(message):
+    klava = types.InlineKeyboardMarkup(row_width=1)
+    button = types.InlineKeyboardButton(text='Полезные ссылки',
+                                        url='https://ru.wikipedia.org/wiki/%D0%A2%D0%B5%D1%80%D0%B5%D1%88%D0%BA%D0%BE%D0%B2%D0%B0,_%D0%92%D0%B0%D0%BB%D0%B5%D0%BD%D1%82%D0%B8%D0%BD%D0%B0_%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%BD%D0%B0')
+    button2 = types.InlineKeyboardButton(text='Ю.А. Гагарин',
+                                         url='https://ru.wikipedia.org/wiki/%D0%93%D0%B0%D0%B3%D0%B0%D1%80%D0%B8%D0%BD,_%D0%AE%D1%80%D0%B8%D0%B9_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B5%D0%B2%D0%B8%D1%87')
+    klava.add(button, button2)
+    bot.send_message(message.chat.id, 'Первый космонавт Земли?', reply_markup=klava)
+
+
+@bot.message_handler(commands=['help'])
+def help_comand(message):
+    bot.send_message(message.chat.id, """Вот список всех команд для общения с SpaceBot:
+    /inline - полезные ссылки
+    /help - помощь пользователю
+    /start - запустить бота
+    /begin - введение в суть диалога с ботом
+    /Go - начать диалог с ботом""")
 
 
 bot.polling()
