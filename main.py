@@ -35,10 +35,13 @@ def go_comand(message):
 
 @bot.callback_query_handler(func=lambda call: call.data)
 def check_one(call):
+    klava = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    button = types.KeyboardButton(text='/next')
+    klava.add(button)
     if call.data == 'button2':
         file = open('C:\Kosmos\img\gagarin.jpg', 'rb')
         bot.send_photo(call.message.chat.id, file, 'Верно! Ю.А. Гагарин был первым кто полетел в космос. '
-                                                   'Нажми на команду /next для следующего вопроса')
+                                                   'Нажми на команду /next для следующего вопроса', reply_markup=klava)
     elif call.data == 'button':
         bot.send_message(call.message.chat.id, 'Неверно:( С.П. Королев — выдающийся конструктор и учёный, '
                                                'работавший в области ракетной и ракетно-космической техники.Попробуй ёщё!')
@@ -50,6 +53,15 @@ def check_one(call):
         bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
     elif call.data == 'btn':
         bot.send_message(call.message.chat.id, 'Верно! 12 апреля-День космонавтики.')
+
+
+
+
+@bot.callback_query_handler(func=lambda mes: mes.data)
+def check_message(mes):
+    spisok_komand = ['/inline', '/help', '/start', '/begin', '/Go', '/next']
+    if mes.data not in spisok_komand:
+        bot.send_message(mes.message.chat.id, 'Команда не понятна. Если возникли трудности отправь команду /help')
 
 
 @bot.message_handler(commands=['next'])
@@ -80,7 +92,8 @@ def help_comand(message):
     /help - помощь пользователю
     /start - запустить бота
     /begin - введение в суть диалога с ботом
-    /Go - начать диалог с ботом""")
+    /Go - начать диалог с ботом
+    /next - бот задаст следующий вопрос""")
 
 
 bot.polling()
