@@ -30,7 +30,7 @@ def go_comand(message):
     button2 = types.InlineKeyboardButton(text='Ю.А. Гагарин', callback_data='button2')
     button3 = types.InlineKeyboardButton(text='Г.С. Титов', callback_data='button3')
     klava.add(button, button2, button3)
-    bot.send_message(message.chat.id, 'Первый космонавт Земли?', reply_markup=klava)
+    bot.send_message(message.chat.id, 'Вопрос 1: Первый космонавт Земли?', reply_markup=klava)
 
 
 @bot.callback_query_handler(func=lambda call: call.data)
@@ -38,6 +38,13 @@ def check_one(call):
     klava = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     button = types.KeyboardButton(text='/next')
     klava.add(button)
+
+    klava2 = types.InlineKeyboardMarkup(row_width=1)
+    bt = types.InlineKeyboardButton(text='С.Е. Савицкая;', callback_data='bt')
+    bt2 = types.InlineKeyboardButton(text='В.В. Терешкова', callback_data='bt2')
+    bt3 = types.InlineKeyboardButton(text='Е.В. Кондакова', callback_data='bt3')
+    klava2.add(bt, bt2, bt3)
+
     if call.data == 'button2':
         file = open('C:\Kosmos\img\gagarin.jpg', 'rb')
         bot.send_photo(call.message.chat.id, file, 'Верно! Ю.А. Гагарин был первым кто полетел в космос. '
@@ -53,6 +60,7 @@ def check_one(call):
         bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
     elif call.data == 'btn':
         bot.send_message(call.message.chat.id, 'Верно! 12 апреля-День космонавтики.')
+        bot.send_message(call.message.chat.id, 'Вопрос 3: Первая женщина – космонавт?', reply_markup=klava2)
 
 
 
@@ -71,7 +79,7 @@ def next_comand(message):
     button2 = types.InlineKeyboardButton(text='7 апреля', callback_data='btn2')
     button3 = types.InlineKeyboardButton(text='1 мая', callback_data='btn3')
     klava.add(button, button2, button3)
-    bot.send_message(message.chat.id, 'День космонавтики?', reply_markup=klava)
+    bot.send_message(message.chat.id, 'Вопрос 2:День космонавтики?', reply_markup=klava)
 
 
 @bot.message_handler(commands=['inline'])
