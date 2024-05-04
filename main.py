@@ -1,54 +1,60 @@
 import telebot
 from telebot import types
+from hendler import sms
 
 bot = telebot.TeleBot('7133490418:AAHK3YC7gWu-uLxJygNinVp5Fk1yz33_qDY')
+SPISOK_COMAND = ['/inline', '/help', '/start', '/begin', '/Go', '/next']
 
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    klava = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    klava_begin = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     button = types.KeyboardButton(text='/begin')
-    klava.add(button)
-    bot.send_message(message.chat.id, 'Привет, я SpaceBot! Знаю много фактов, связанных с космосом. '
-                                      'А знаешь ли ты? Отправь команду /begin и начнём.', reply_markup=klava)
+    klava_begin.add(button)
+    if message.text == '/start':
+        bot.send_message(message.chat.id, 'Привет, я SpaceBot! Знаю много фактов, связанных с космосом. '
+                                          'А знаешь ли ты? Отправь команду /begin и начнём.', reply_markup=klava_begin)
+    bot.register_next_step_handler(message, sms)
 
 
 @bot.message_handler(commands=['begin'])
 def begin_comand(message):
-    klava = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    klava_go = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     button = types.KeyboardButton(text='/Go')
-    klava.add(button)
+    klava_go.add(button)
     bot.send_message(message.chat.id, 'Я буду задавать вопросы про различные факты о космосе, '
                                       'а ты отвечай из предложенных вариантов.Если появятся вопросы отправляй команду /help',
-                     reply_markup=klava)
+                     reply_markup=klava_go)
+    bot.register_next_step_handler(message, sms)
 
 
 @bot.message_handler(commands=['Go'])
 def go_comand(message):
-    klava = types.InlineKeyboardMarkup(row_width=1)
+    klava_one = types.InlineKeyboardMarkup(row_width=1)
     button = types.InlineKeyboardButton(text='С.П. Королев', callback_data='button')
     button2 = types.InlineKeyboardButton(text='Ю.А. Гагарин', callback_data='button2')
     button3 = types.InlineKeyboardButton(text='Г.С. Титов', callback_data='button3')
-    klava.add(button, button2, button3)
-    bot.send_message(message.chat.id, 'Вопрос 1: Первый космонавт Земли?', reply_markup=klava)
+    klava_one.add(button, button2, button3)
+    bot.send_message(message.chat.id, 'Вопрос 1: Первый космонавт Земли?', reply_markup=klava_one)
+    bot.register_next_step_handler(message, sms)
 
 
 @bot.callback_query_handler(func=lambda call: call.data)
 def check_one(call):
-    klava = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-    button = types.KeyboardButton(text='/next')
-    klava.add(button)
+    klava_two = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    button = types.KeyboardButton(text='/2')
+    klava_two.add(button)
 
-    klava2 = types.InlineKeyboardMarkup(row_width=1)
-    bt = types.InlineKeyboardButton(text='С.Е. Савицкая;', callback_data='bt')
-    bt2 = types.InlineKeyboardButton(text='В.В. Терешкова', callback_data='bt2')
-    bt3 = types.InlineKeyboardButton(text='Е.В. Кондакова', callback_data='bt3')
-    klava2.add(bt, bt2, bt3)
+    # klava2 = types.InlineKeyboardMarkup(row_width=1)
+    # bt = types.InlineKeyboardButton(text='С.Е. Савицкая;', callback_data='bt')
+    # bt2 = types.InlineKeyboardButton(text='В.В. Терешкова', callback_data='bt2')
+    # bt3 = types.InlineKeyboardButton(text='Е.В. Кондакова', callback_data='bt3')
+    # klava2.add(bt, bt2, bt3)
 
     if call.data == 'button2':
         file = open('C:\Kosmos\img\gagarin.jpg', 'rb')
         bot.send_photo(call.message.chat.id, file, 'Верно! Ю.А. Гагарин был первым кто полетел в космос. '
-                                                   'Нажми на команду /next для следующего вопроса', reply_markup=klava)
+                                                   'Нажми на команду /2 для следующего вопроса', reply_markup=klava_two)
     elif call.data == 'button':
         bot.send_message(call.message.chat.id, 'Неверно:( С.П. Королев — выдающийся конструктор и учёный, '
                                                'работавший в области ракетной и ракетно-космической техники.Попробуй ёщё!')
@@ -56,23 +62,37 @@ def check_one(call):
         bot.send_message(call.message.chat.id, 'Неверно:( Г.С. Титов — второй советский космонавт, '
                                                'второй человек в мире, совершивший орбитальный космический полёт.'
                                                'Попробуй ёщё!')
-    elif call.data == 'btn2' or call.data == 'btn3':
-        bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
-    elif call.data == 'btn':
-        bot.send_message(call.message.chat.id, 'Верно! 12 апреля-День космонавтики.')
-        bot.send_message(call.message.chat.id, 'Вопрос 3: Первая женщина – космонавт?', reply_markup=klava2)
+
+    # elif call.data == 'btn2' or call.data == 'btn3':
+    #     bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
+    # elif call.data == 'btn':
+    #     bot.send_message(call.message.chat.id, 'Верно! 12 апреля-День космонавтики.')
+    #     bot.send_message(call.message.chat.id, 'Вопрос 3: Первая женщина – космонавт?', reply_markup=klava2)
 
 
+@bot.callback_query_handler(func=lambda zzz: zzz.data == '/3')
+def check_three(zzz):
+    klava2 = types.InlineKeyboardMarkup(row_width=1)
+    bt = types.InlineKeyboardButton(text='С.Е. Савицкая;', callback_data='bt')
+    bt2 = types.InlineKeyboardButton(text='В.В. Терешкова', callback_data='bt2')
+    bt3 = types.InlineKeyboardButton(text='Е.В. Кондакова', callback_data='bt3')
+    klava2.add(bt, bt2, bt3)
+
+    if zzz.data == 'bt' or zzz.data == 'bt3':
+        bot.send_message(zzz.message.chat.id, 'Неверно:( Попробуй ёщё!')
+    elif zzz.data == 'btn':
+        bot.send_message(zzz.message.chat.id, 'Верно! В.В. Терешков - Первая женщина – космонавт')
+        bot.send_message(zzz.message.chat.id, 'Вопрос 3: Первая женщина – космонавт?', reply_markup=klava2)
 
 
-@bot.callback_query_handler(func=lambda mes: mes.data)
-def check_message(mes):
-    spisok_komand = ['/inline', '/help', '/start', '/begin', '/Go', '/next']
-    if mes.data not in spisok_komand:
-        bot.send_message(mes.message.chat.id, 'Команда не понятна. Если возникли трудности отправь команду /help')
+# @bot.callback_query_handler(func=lambda mes: mes.data)
+# def check_message(mes):
+#     spisok_komand = ['/inline', '/help', '/start', '/begin', '/Go', '/next']
+#     if mes.data not in spisok_komand:
+#         bot.send_message(mes.message.chat.id, 'Команда не понятна. Если возникли трудности отправь команду /help')
 
 
-@bot.message_handler(commands=['next'])
+@bot.message_handler(commands=['2'])
 def next_comand(message):
     klava = types.InlineKeyboardMarkup(row_width=1)
     button = types.InlineKeyboardButton(text='12 апреля', callback_data='btn')
@@ -91,6 +111,7 @@ def inline_comand(message):
                                          url='https://ru.wikipedia.org/wiki/%D0%93%D0%B0%D0%B3%D0%B0%D1%80%D0%B8%D0%BD,_%D0%AE%D1%80%D0%B8%D0%B9_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B5%D0%B2%D0%B8%D1%87')
     klava.add(button, button2)
     bot.send_message(message.chat.id, 'Полезные ссылки', reply_markup=klava)
+    bot.register_next_step_handler(message, sms)
 
 
 @bot.message_handler(commands=['help'])
@@ -102,6 +123,13 @@ def help_comand(message):
     /begin - введение в суть диалога с ботом
     /Go - начать диалог с ботом
     /next - бот задаст следующий вопрос""")
+    bot.register_next_step_handler(message, sms)
+
+
+@bot.message_handler(func=lambda message: True)
+def eho(message):
+    if message.text not in SPISOK_COMAND:
+        bot.send_message(message.chat.id, 'Ваша команда не понятна. Если возникли трудности отправь команду /help')
 
 
 bot.polling()
