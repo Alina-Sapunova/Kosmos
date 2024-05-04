@@ -4,7 +4,7 @@ from telebot import types
 # from hendler import sms
 
 bot = telebot.TeleBot('7133490418:AAHK3YC7gWu-uLxJygNinVp5Fk1yz33_qDY')
-SPISOK_COMAND = ['/inline', '/help', '/start', '/begin', '/Go', '2', '3']
+SPISOK_COMAND = ['/inline', '/help', '/start', '/begin', '/Go', '2', '3', '4', '5', '6', '7']
 
 
 @bot.message_handler(commands=['start'])
@@ -48,6 +48,10 @@ def check(call):
     button = types.KeyboardButton(text='/3')
     klava_three.add(button)
 
+    klava_four = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    button = types.KeyboardButton(text='/4')
+    klava_four.add(button)
+
     if call.data == 'button2':
         file = open('C:\Kosmos\img\gagarin.jpg', 'rb')
         bot.send_photo(call.message.chat.id, file, 'Верно! Ю.А. Гагарин был первым кто полетел в космос. '
@@ -75,10 +79,19 @@ def check(call):
                          'Российской Федерации.Стала третьей женщиной-космонавтом в истории после Валентины Терешковой '
                          'и Светланы Савицкой.')
     elif call.data == 'bt2':
-        bot.send_message(call.message.chat.id, 'Верно! В.В. Терешкова вошла в историю как первая женщина-космонавт '
-                                               'и единственная женщина, совершившая одиночный космический полет.'
-                                               'После полета продолжила заниматься космической подготовкой.'
-                                               ' Нажми на команду /4 для следующего вопроса')
+        file2 = open('C:\Kosmos\img\chereshkova.jpeg', 'rb')
+        bot.send_photo(call.message.chat.id, file2,
+                       'Верно! В.В. Терешкова вошла в историю как первая женщина-космонавт '
+                       'и единственная женщина, совершившая одиночный космический полет.'
+                       'После полета продолжила заниматься космической подготовкой.'
+                       ' Нажми на команду /4 для следующего вопроса')
+    elif call.data == 'kn':
+        bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
+    elif call.data == 'kn2':
+        bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
+    elif call.data == 'kn3':
+        bot.send_message(call.message.chat.id, 'Верно! 1957 год считается началом космической эры человечества.',
+                         reply_markup=klava_four)
 
 
 @bot.message_handler(commands=['2'])
@@ -101,6 +114,16 @@ def three_comand(message):
     bot.send_message(message.chat.id, 'Вопрос 3: Первая женщина – космонавт?', reply_markup=klava3)
 
 
+@bot.message_handler(commands=['4'])
+def four_comand(message):
+    klava4 = types.InlineKeyboardMarkup(row_width=1)
+    kn = types.InlineKeyboardButton(text='1961', callback_data='kn')
+    kn2 = types.InlineKeyboardButton(text='1962', callback_data='kn2')
+    kn3 = types.InlineKeyboardButton(text=' 1957', callback_data='kn3')
+    klava4.add(kn, kn2, kn3)
+    bot.send_message(message.chat.id, 'Вопрос 4: Какой год считают началом эры космонавтики?', reply_markup=klava4)
+
+
 @bot.message_handler(commands=['inline'])
 def inline_comand(message):
     klava = types.InlineKeyboardMarkup(row_width=1)
@@ -120,7 +143,8 @@ def help_comand(message):
     /start - запустить бота
     /begin - введение в суть диалога с ботом
     /Go - начать диалог с ботом
-    /2, /3, /4 ... /7 - бот задаст следующий по счёту вопрос""")
+    /2, /3, /4, /5, /6, /7 - бот задаст следующий
+     по счёту вопрос""")
 
 
 @bot.message_handler(func=lambda message: True)
