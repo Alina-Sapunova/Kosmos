@@ -1,10 +1,8 @@
 import telebot
 from telebot import types
 
-# from hendler import sms
-
 bot = telebot.TeleBot('7133490418:AAHK3YC7gWu-uLxJygNinVp5Fk1yz33_qDY')
-SPISOK_COMAND = ['/inline', '/help', '/start', '/begin', '/Go', '2', '3', '4', '5', '6', '7']
+SPISOK_COMAND = ['/inline', '/help', '/start', '/begin', '/Go', '2', '3', '4', '5', '/end']
 
 
 @bot.message_handler(commands=['start'])
@@ -15,7 +13,6 @@ def start(message):
     if message.text == '/start':
         bot.send_message(message.chat.id, 'Привет, я SpaceBot! Знаю много фактов, связанных с космосом. '
                                           'А знаешь ли ты? Отправь команду /begin и начнём.', reply_markup=klava_begin)
-    # bot.register_next_step_handler(message, sms)
 
 
 @bot.message_handler(commands=['begin'])
@@ -23,8 +20,8 @@ def begin_comand(message):
     klava_go = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     button = types.KeyboardButton(text='/Go')
     klava_go.add(button)
-    bot.send_message(message.chat.id, 'Я буду задавать вопросы про различные факты о космосе, '
-                                      'а ты отвечай из предложенных вариантов. Если появятся вопросы отправляй команду /help',
+    bot.send_message(message.chat.id, 'Я задам 5 вопросов про различные факты о космосе, '
+                                      'а ты отвечай из предложенных вариантов. Если появятся вопросы отправляй команду /help,',
                      reply_markup=klava_go)
 
 
@@ -54,6 +51,10 @@ def check(call):
 
     klava_five = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     button = types.KeyboardButton(text='/5')
+    klava_five.add(button)
+
+    klava_six = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    button = types.KeyboardButton(text='/end')
     klava_five.add(button)
 
     if call.data == 'button2':
@@ -102,12 +103,13 @@ def check(call):
         bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
     elif call.data == 'knop':
         file = open('C:\Kosmos\img\mlechnii_put.jpg', 'rb')
-        bot.send_photo(call.message.chat.id, file, 'Молодец!', reply_markup=klava_five)
+        bot.send_photo(call.message.chat.id, file, 'Молодец!')
         bot.send_message(call.message.chat.id, 'Название Млечный Путь произошло от латинского via lactea, '
-                                                   'что переводится как — молочная дорога. Млечный Путь — '
-                                                   'наша родная галактика.Она состоит примерно из 100-400 '
-                                                   'миллиардов звезд! А ещё наша галактика существует уже порядка '
-                                               '13,6 миллиардов!', reply_markup=klava_five)
+                                               'что переводится как — молочная дорога. Млечный Путь — '
+                                               'наша родная галактика.Она состоит примерно из 100-400 '
+                                               'миллиардов звезд! А ещё наша галактика существует уже порядка '
+                                               '13,6 миллиардов лет!', reply_markup=klava_six)
+        bot.send_message(call.message.chat.id, 'Класс! Теперь напиши команду /end для завершения диалога')
 
 
 @bot.message_handler(commands=['2'])
@@ -171,8 +173,18 @@ def help_comand(message):
     /start - запустить бота
     /begin - введение в суть диалога с ботом
     /Go - начать диалог с ботом
-    /2, /3, /4, /5, /6, /7 - бот задаст следующий
-     по счёту вопрос""")
+    /2, /3, /4, /5, - бот задаст следующий
+     по счёту вопрос
+     /end - завершить диалог""")
+
+
+@bot.message_handler(commands=['end'])
+def end_comand(message):
+    file = open('C:\Kosmos\img\stik.jpg', 'rb')
+    bot.send_message(message.chat.id, 'На этом всё! Лови подарочек от SpaceBot.')
+    bot.send_photo(message.chat.id, file,
+                   'Теперь ты больше знаешь о космосе. Если что-то заинтересовало отправвь команду '
+                   '/inline, там есть полезные ссылочки. Пока-пока')
 
 
 @bot.message_handler(func=lambda message: True)
