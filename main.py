@@ -52,6 +52,10 @@ def check(call):
     button = types.KeyboardButton(text='/4')
     klava_four.add(button)
 
+    klava_five = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    button = types.KeyboardButton(text='/5')
+    klava_five.add(button)
+
     if call.data == 'button2':
         file = open('C:\Kosmos\img\gagarin.jpg', 'rb')
         bot.send_photo(call.message.chat.id, file, 'Верно! Ю.А. Гагарин был первым кто полетел в космос. '
@@ -90,8 +94,20 @@ def check(call):
     elif call.data == 'kn2':
         bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
     elif call.data == 'kn3':
-        bot.send_message(call.message.chat.id, 'Верно! 1957 год считается началом космической эры человечества.',
-                         reply_markup=klava_four)
+        bot.send_message(call.message.chat.id, 'Верно! 1957 год считается началом космической эры человечества. '
+                                               'Нажми на команду /5 для следующего вопроса', reply_markup=klava_five)
+    elif call.data == 'knop3':
+        bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
+    elif call.data == 'knop2':
+        bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
+    elif call.data == 'knop':
+        file = open('C:\Kosmos\img\mlechnii_put.jpg', 'rb')
+        bot.send_photo(call.message.chat.id, file, 'Молодец!', reply_markup=klava_five)
+        bot.send_message(call.message.chat.id, 'Название Млечный Путь произошло от латинского via lactea, '
+                                                   'что переводится как — молочная дорога. Млечный Путь — '
+                                                   'наша родная галактика.Она состоит примерно из 100-400 '
+                                                   'миллиардов звезд! А ещё наша галактика существует уже порядка '
+                                               '13,6 миллиардов!', reply_markup=klava_five)
 
 
 @bot.message_handler(commands=['2'])
@@ -124,6 +140,16 @@ def four_comand(message):
     bot.send_message(message.chat.id, 'Вопрос 4: Какой год считают началом эры космонавтики?', reply_markup=klava4)
 
 
+@bot.message_handler(commands=['5'])
+def four_comand(message):
+    klava5 = types.InlineKeyboardMarkup(row_width=1)
+    knop = types.InlineKeyboardButton(text='Млечный путь', callback_data='knop')
+    knop2 = types.InlineKeyboardButton(text='Галактика Андромеды', callback_data='knop2')
+    knop3 = types.InlineKeyboardButton(text='Земная галактика', callback_data='knop3')
+    klava5.add(knop, knop2, knop3)
+    bot.send_message(message.chat.id, 'Вопрос 5: Как называется наша галактика?', reply_markup=klava5)
+
+
 @bot.message_handler(commands=['inline'])
 def inline_comand(message):
     klava = types.InlineKeyboardMarkup(row_width=1)
@@ -131,7 +157,9 @@ def inline_comand(message):
                                         url='https://ru.wikipedia.org/wiki/%D0%A2%D0%B5%D1%80%D0%B5%D1%88%D0%BA%D0%BE%D0%B2%D0%B0,_%D0%92%D0%B0%D0%BB%D0%B5%D0%BD%D1%82%D0%B8%D0%BD%D0%B0_%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%BD%D0%B0')
     button2 = types.InlineKeyboardButton(text='Ю.А. Гагарин',
                                          url='https://ru.wikipedia.org/wiki/%D0%93%D0%B0%D0%B3%D0%B0%D1%80%D0%B8%D0%BD,_%D0%AE%D1%80%D0%B8%D0%B9_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B5%D0%B2%D0%B8%D1%87')
-    klava.add(button, button2)
+    button3 = types.InlineKeyboardButton(text='Млечный путь',
+                                         url='https://pikabu.ru/story/10_interesnyikh_faktov_o_mlechnom_puti_4349014')
+    klava.add(button, button2, button3)
     bot.send_message(message.chat.id, 'Полезные ссылки', reply_markup=klava)
 
 
