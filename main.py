@@ -77,12 +77,12 @@ def check(call):
                          reply_markup=klava_three)
     elif call.data == 'bt':
         bot.send_message(call.message.chat.id, 'Неверно:( С.Е. Савицкая-вторая в мире женщина-космонавт после '
-                                               'Валентины Терешковой. Совершила два полёта в космос.')
+                                               'Валентины Терешковой. Совершила два полёта в космос. Попробуй ёщё!')
     elif call.data == 'bt3':
         bot.send_message(call.message.chat.id,
                          'Неверно:( Е.В. Кондакова-Герой Российской Федерации.Лётчик-космонавт '
                          'Российской Федерации.Стала третьей женщиной-космонавтом в истории после Валентины Терешковой '
-                         'и Светланы Савицкой.')
+                         'и Светланы Савицкой. Попробуй ёщё!')
     elif call.data == 'bt2':
         file2 = open('C:\Kosmos\img\chereshkova.jpeg', 'rb')
         bot.send_photo(call.message.chat.id, file2,
@@ -109,7 +109,7 @@ def check(call):
                                                'наша родная галактика.Она состоит примерно из 100-400 '
                                                'миллиардов звезд! А ещё наша галактика существует уже порядка '
                                                '13,6 миллиардов лет!', reply_markup=klava_six)
-        bot.send_message(call.message.chat.id, 'Класс! Теперь напиши команду /end для завершения диалога,')
+        bot.send_message(call.message.chat.id, 'Класс! Теперь напиши команду /end для завершения диалога.')
 
 
 @bot.message_handler(commands=['2'])
@@ -180,11 +180,14 @@ def help_comand(message):
 
 @bot.message_handler(commands=['end'])
 def end_comand(message):
+    klava_seven = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    button = types.KeyboardButton(text='/inline')
+    klava_seven.add(button)
     file = open('C:\Kosmos\img\stik.jpg', 'rb')
     bot.send_message(message.chat.id, 'На этом всё! Лови подарочек от SpaceBot.')
     bot.send_photo(message.chat.id, file,
                    'Теперь ты больше знаешь о космосе. Если что-то заинтересовало отправвь команду '
-                   '/inline, там есть полезные ссылочки. Пока-пока')
+                   '/inline, там есть полезные ссылочки. Пока-пока', reply_markup=klava_seven)
 
 
 @bot.message_handler(func=lambda message: True)
