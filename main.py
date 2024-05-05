@@ -1,6 +1,7 @@
 import telebot
 from telebot import types
-from config import bot
+
+bot = telebot.TeleBot('7133490418:AAHK3YC7gWu-uLxJygNinVp5Fk1yz33_qDY')
 
 SPISOK_COMAND = ['/inline', '/help', '/start', '/begin', '/Go', '2', '3', '4', '5', '/end']
 
