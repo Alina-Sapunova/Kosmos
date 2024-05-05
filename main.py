@@ -103,8 +103,7 @@ def check(call):
     elif call.data == 'knop2':
         bot.send_message(call.message.chat.id, 'Неверно:( Попробуй ёщё!')
     elif call.data == 'knop':
-        file = open('C:\Kosmos\img\mlechnii_put.jpg', 'rb')
-        bot.send_photo(call.message.chat.id, file, 'Молодец!')
+        bot.send_message(call.message.chat.id, 'Молодец!')
         bot.send_message(call.message.chat.id, 'Название Млечный Путь произошло от латинского via lactea, '
                                                'что переводится как — молочная дорога. Млечный Путь — '
                                                'наша родная галактика.Она состоит примерно из 100-400 '
