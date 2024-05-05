@@ -55,7 +55,7 @@ def check(call):
 
     klava_six = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     button = types.KeyboardButton(text='/end')
-    klava_five.add(button)
+    klava_six.add(button)
 
     if call.data == 'button2':
         file = open('C:\Kosmos\img\gagarin.jpg', 'rb')
@@ -109,7 +109,7 @@ def check(call):
                                                'наша родная галактика.Она состоит примерно из 100-400 '
                                                'миллиардов звезд! А ещё наша галактика существует уже порядка '
                                                '13,6 миллиардов лет!', reply_markup=klava_six)
-        bot.send_message(call.message.chat.id, 'Класс! Теперь напиши команду /end для завершения диалога')
+        bot.send_message(call.message.chat.id, 'Класс! Теперь напиши команду /end для завершения диалога,')
 
 
 @bot.message_handler(commands=['2'])
